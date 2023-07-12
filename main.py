@@ -24,7 +24,7 @@ class NeonAgent:
         self.ipfs_subscriber = ipfs_api.pubsub_subscribe("test", self.sub_callback)
         self.offer = Offer
         self.data = ""
-        self.w3 = web3.Web3(web3.Web3.WebsocketProvider(NEON_WSS))
+        self.w3 = web3.Web3(web3.Web3.HTTPProvider(NEON_WSS))
         self.account = web3.eth.account.from_mnemonic(MNEMONIC)
 
     def make_offer(self, data):
@@ -65,9 +65,9 @@ class NeonAgent:
                                          int(cur_offer.deadline),
                                          int(cur_offer.noncecur_offer),
                                          cur_offer.sender])
-        sighed_hash = encode_defunct(hash)
+        msg = encode_defunct(hash)
 
-        signed_message = web3.eth.account.sign_message(sighed_hash, private_key=private_key)
+        cur_offer.signature = web3.eth.account.sign_message(msg, private_key=private_key)
 
         return cur_offer
 

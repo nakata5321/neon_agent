@@ -12,3 +12,4 @@ class Offer:
     deadline: str
     sender: str
     nonce: str
+    signature: str
